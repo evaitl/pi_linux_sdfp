@@ -733,6 +733,14 @@ struct kmap_ctrl {
 	pte_t				pteval[KM_MAX_IDX];
 #endif
 };
+#ifdef CONFIG_DEBUG_SDFP
+struct sdfp_node {
+        struct sdfp_node *next;
+        uintptr_t start;
+        uintptr_t end;
+        uint8_t *buf;
+};
+#endif
 
 struct task_struct {
 #ifdef CONFIG_THREAD_INFO_IN_TASK
@@ -967,6 +975,12 @@ struct task_struct {
 	pid_t				pid;
 	pid_t				tgid;
 
+#ifdef CONFIG_DEBUG_SDFP
+        struct sdfp_node *sdfp_list;
+        uintptr_t sdfp_sbuf_sz;
+        int sdfp_nr;
+        struct mutex sdfp_lock;
+#endif
 #ifdef CONFIG_STACKPROTECTOR
 	/* Canary value for the -fstack-protector GCC feature: */
 	unsigned long			stack_canary;

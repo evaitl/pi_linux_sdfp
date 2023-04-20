@@ -279,7 +279,22 @@ do {									\
 									\
 	(x) = __rgu_val;						\
 } while (0)
-
+#ifdef CONFIG_DEBUG_SDFP
+extern void sdfp_clear(struct task_struct *tsk, int nr);
+extern void sdfp_check(volatile void *to, const void __user *from, unsigned long size);
+#define __get_user_error(x, ptr, err)					\
+do {									\
+	__typeof__(*(ptr)) __user *__p = (ptr);				\
+	might_fault();							\
+	if (access_ok(__p, sizeof(*__p))) {				\
+		__p = uaccess_mask_ptr(__p);				\
+		__raw_get_user((x), __p, (err));			\
+                sdfp_check(&x,__p,sizeof(x));                           \
+	} else {							\
+		(x) = (__force __typeof__(x))0; (err) = -EFAULT;	\
+	}								\
+} while (0)
+#else
 #define __get_user_error(x, ptr, err)					\
 do {									\
 	__typeof__(*(ptr)) __user *__p = (ptr);				\
@@ -291,7 +306,7 @@ do {									\
 		(x) = (__force __typeof__(x))0; (err) = -EFAULT;	\
 	}								\
 } while (0)
-
+#endif
 #define __get_user(x, ptr)						\
 ({									\
 	int __gu_err = 0;						\

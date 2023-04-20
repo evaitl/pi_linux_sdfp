@@ -1,3 +1,9 @@
+SDFP -- ARM64
+=============
+This is the arm64 port of the SDFP project. Target board is a
+raspberry pi 400. 
+
+
 Linux kernel
 ============
 

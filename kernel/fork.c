@@ -540,7 +540,10 @@ void free_task(struct task_struct *tsk)
 #endif
 	release_user_cpus_ptr(tsk);
 	scs_release(tsk);
-
+#ifdef CONFIG_DEBUG_SDFP
+        sdfp_clear(tsk,-1);
+        mutex_destroy(&tsk->sdfp_lock);
+#endif
 #ifndef CONFIG_THREAD_INFO_IN_TASK
 	/*
 	 * The task is finally done with both the stack and thread_info,

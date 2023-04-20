@@ -125,6 +125,9 @@ _copy_from_user(void *to, const void __user *from, unsigned long n)
 	if (!should_fail_usercopy() && likely(access_ok(from, n))) {
 		instrument_copy_from_user_before(to, from, n);
 		res = raw_copy_from_user(to, from, n);
+#ifdef CONFIG_DEBUG_SDFP
+                sdfp_check(to,from,n-res);
+#endif
 		instrument_copy_from_user_after(to, from, n, res);
 	}
 	if (unlikely(res))

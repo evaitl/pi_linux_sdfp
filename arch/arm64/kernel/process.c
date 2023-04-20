@@ -287,7 +287,10 @@ int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
 	if (current->mm)
 		fpsimd_preserve_current_state();
 	*dst = *src;
-
+#ifdef CONFIG_DEBUG_SDFP
+        dst->sdfp_list=0;
+        mutex_init(&dst->sdfp_lock);
+#endif
 	/* We rely on the above assignment to initialize dst's thread_flags: */
 	BUILD_BUG_ON(!IS_ENABLED(CONFIG_THREAD_INFO_IN_TASK));
 
