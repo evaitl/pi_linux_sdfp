@@ -4,6 +4,12 @@ PATCHLEVEL = 1
 SUBLEVEL = 24
 EXTRAVERSION =
 NAME = Hurr durr I'ma ninja sloth
+export ARCH:=arm64
+export CROSS_COMPILE:=aarch64-linux-gnu-
+export INSTALL_MOD_PATH:=/run/media/evaitl/rootfs
+export INSTALL_MOD_STRIP:=1
+export INSTALL_PATH:=/run/media/evaitl/bootfs
+
 
 # *DOCUMENTATION*
 # To see a list of typical targets execute "make help"
